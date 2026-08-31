@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Process Knowledge Base | OPAs, Templates & Guidelines</title>
+    <meta name="description"
+        content="Interactive Software Engineering Process Knowledge Base organizing organizational process assets, templates, guidelines, and quality checklists.">
+
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Application CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+
+<body>
+    <!-- Top Navigation Header -->
+    <header class="top-header">
+        <div class="brand-section">
+            <button class="btn-icon mobile-menu-toggle" id="mobileMenuBtn" aria-label="Toggle Sidebar"
+                style="display: none;">☰</button>
+            <div class="brand-logo">⚡</div>
+            <div class="brand-title">
+                <span>SEQA Process Wiki</span>
+                <span class="brand-badge">OPAs & Standards</span>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <div class="search-container" id="searchTrigger">
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="globalSearchInput" class="search-input"
+                        placeholder="Search guidelines, templates, policies, checklists... (e.g. ADR, DoD, PR, Release)"
+                        autocomplete="off">
+                    <span class="kbd-shortcut">⌘K</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn btn-secondary" id="openTemplateStudioBtn" title="Launch Template Studio">
+                <span>📝</span>
+                <span>Template Studio</span>
+            </button>
+            <button class="btn btn-primary" id="openCreateAssetBtn" title="Create New Process Asset">
+                <span>➕</span>
+                <span>New Asset</span>
+            </button>
+            <button class="btn-icon" id="themeToggleBtn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+                <span id="themeIcon">☀️</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="appSidebar">
+            <!-- Overview Section -->
+            <div>
+                <div class="sidebar-section-title">Knowledge Base</div>
+                <ul class="nav-list">
+                    <li>
+                        <button class="nav-item-btn active" data-nav="explore" id="navExploreBtn">
+                            <div class="nav-item-left">
+                                <span class="nav-icon">📚</span>
+                                <span>All Process Assets</span>
+                            </div>
+                            <span class="nav-badge-count" id="totalAssetsCount">0</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-nav="favorites" id="navFavoritesBtn">
+                            <div class="nav-item-left">
+                                <span class="nav-icon">⭐</span>
+                                <span>My Bookmarks</span>
+                            </div>
+                            <span class="nav-badge-count" id="favoritesCount">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- SDLC Phases Section -->
+            <div>
+                <div class="sidebar-section-title">SDLC Lifecycle Phases</div>
+                <ul class="nav-list" id="phaseNavList">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+
+            <!-- Asset Types Section -->
+            <div>
+                <div class="sidebar-section-title">Asset Categories</div>
+                <ul class="nav-list" id="categoryNavList">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+
+            <!-- Interactive Tools Section -->
+            <div>
+                <div class="sidebar-section-title">Interactive Process Tools</div>
+                <ul class="nav-list">
+                    <li>
+                        <button class="nav-item-btn" data-nav="studio" id="navStudioBtn">
+                            <div class="nav-item-left">
+                                <span class="nav-icon">🎨</span>
+                                <span>Template Customizer</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-nav="checklists" id="navChecklistsBtn">
+                            <div class="nav-item-left">
+                                <span class="nav-icon">✅</span>
+                                <span>Quality Gate Checklists</span>
+                            </div>
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-item-btn" data-nav="glossary" id="navGlossaryBtn">
+                            <div class="nav-item-left">
+                                <span class="nav-icon">📖</span>
+                                <span>Process Glossary & RACI</span>
+                            </div>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Footer Quick Info -->
+            <div
+                style="margin-top: auto; padding: 12px; background: var(--bg-surface-elevated); border-radius: var(--radius-md); border: 1px solid var(--border-light); font-size: 11.5px; color: var(--text-muted);">
+                <div style="font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">🚀 SEQA Process Assets
+                    v2.5</div>
+                <div>Standardized procedures, governance templates, and quality gates for high-performing engineering
+                    teams.</div>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-wrapper">
+
+            <!-- VIEW 1: Assets Explorer & Process Map -->
+            <section id="viewExplorer" class="view-panel active-view">
+                <!-- Interactive SDLC Process Flow Banner -->
+                <div class="process-hero-banner" id="processMapContainer">
+                    <div class="process-hero-header">
+                        <div class="process-hero-title">
+                            <h1>Software Engineering Lifecycle Map</h1>
+                            <p>Explore standard procedures, templates, and quality exit criteria across each phase of
+                                development.</p>
+                        </div>
+                        <button class="btn btn-secondary" id="resetPhaseFilterBtn" style="display: none;">
+                            <span>↺</span> <span>Show All Phases</span>
+                        </button>
+                    </div>
+
+                    <div class="process-map-flow" id="phaseCardsFlow">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <!-- Expanded Active Phase Details (RACI & Quality Gate) -->
+                    <div class="phase-expanded-details" id="phaseExpandedDetails" style="display: none;">
+                        <div class="phase-raci-box">
+                            <h4 id="expandedPhaseName">Requirements Phase RACI Matrix</h4>
+                            <div class="raci-grid" id="expandedRaciGrid">
+                                <!-- RACI items -->
+                            </div>
+                        </div>
+                        <div class="phase-gate-box">
+                            <h4>Mandatory Quality Gate</h4>
+                            <div class="gate-badge" id="expandedQualityGate">
+                                Definition of Ready (DoR) satisfied, Acceptance Criteria signed off.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter & Layout Toolbar -->
+                <div class="content-toolbar">
+                    <div class="filter-pills" id="categoryFilterPills">
+                        <!-- Filter buttons populated by JS -->
+                    </div>
+                    <div class="toolbar-right">
+                        <span style="font-size: 12.5px; color: var(--text-muted);" id="visibleAssetsCountText">Showing 8
+                            assets</span>
+                        <div class="view-toggle-group">
+                            <button class="view-toggle-btn active" id="layoutGridBtn" title="Grid View">⊞</button>
+                            <button class="view-toggle-btn" id="layoutListBtn" title="List View">☰</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assets Grid -->
+                <div class="assets-grid" id="assetsGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Empty state placeholder -->
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">🔎</div>
+                    <h3 style="font-family: var(--font-sans); color: var(--text-primary);">No process assets found</h3>
+                    <p style="color: var(--text-secondary); max-width: 420px;">Try adjusting your search terms or filter
+                        selections, or create a new process asset to add to the wiki.</p>
+                    <button class="btn btn-primary" id="emptyResetBtn" style="margin-top: 8px;">Reset Filters</button>
+                </div>
+            </section>
+
+            <!-- VIEW 2: Asset Detail Viewer -->
+            <section id="viewDetail" class="view-panel">
+                <div class="asset-detail-container">
+                    <!-- Top Detail Navigation -->
+                    <div class="detail-top-nav">
+                        <button class="back-btn" id="detailBackBtn">
+                            <span>←</span>
+                            <span>Back to Knowledge Base</span>
+                        </button>
+                        <div class="detail-action-buttons">
+                            <button class="btn btn-secondary" id="detailBookmarkBtn">
+                                <span id="detailBookmarkIcon">⭐</span>
+                                <span id="detailBookmarkText">Bookmark</span>
+                            </button>
+                            <button class="btn btn-secondary" id="detailCopyMdBtn">
+                                <span>📋</span>
+                                <span>Copy Markdown</span>
+                            </button>
+                            <button class="btn btn-secondary" id="detailDownloadBtn">
+                                <span>⬇️</span>
+                                <span>Download .md</span>
+                            </button>
+                            <button class="btn btn-primary" id="detailActionTriggerBtn">
+                                <span id="detailActionIcon">🎨</span>
+                                <span id="detailActionText">Open in Studio</span>
+                            </button>
+                            <button class="btn-icon" id="detailPrintBtn" title="Print Document">
+                                <span>🖨️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Detail Hero Banner -->
+                    <div class="detail-hero">
+                        <div class="detail-badges" id="detailBadges">
+                            <!-- Type, Phase, Status badges -->
+                        </div>
+                        <h1 class="detail-title" id="detailTitle">Architecture Decision Record (ADR) Template</h1>
+                        <p class="detail-summary-text" id="detailSummary">Standard document to capture significant
+                            architectural choices, context, evaluated alternatives, and trade-offs.</p>
+
+                        <div class="detail-meta-grid">
+                            <div class="meta-box">
+                                <span class="meta-box-label">Owner / Guild</span>
+                                <span class="meta-box-val" id="detailOwner">Architecture Review Board</span>
+                            </div>
+                            <div class="meta-box">
+                                <span class="meta-box-label">Version</span>
+                                <span class="meta-box-val" id="detailVersion">v2.3</span>
+                            </div>
+                            <div class="meta-box">
+                                <span class="meta-box-label">Last Audited</span>
+                                <span class="meta-box-val" id="detailLastUpdated">2026-02-10</span>
+                            </div>
+                            <div class="meta-box">
+                                <span class="meta-box-label">Governance Status</span>
+                                <span class="meta-box-val" id="detailStatus"
+                                    style="color: var(--success);">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Document Body & TOC -->
+                    <div class="detail-body-wrapper">
+                        <div class="wiki-content-rendered" id="detailRenderedContent">
+                            <!-- Rendered Markdown HTML -->
+                        </div>
+                        <aside class="toc-sidebar" id="detailTocSidebar">
+                            <div class="toc-title">On this page</div>
+                            <ul class="toc-list" id="detailTocList">
+                                <!-- Populated dynamically -->
+                            </ul>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 3: Interactive Template Generator Studio -->
+            <section id="viewStudio" class="view-panel">
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2
+                            style="font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--text-primary);">
+                            Template Customizer & Generator</h2>
+                        <p style="color: var(--text-secondary); font-size: 13.5px;">Select a standardized template, fill
+                            in project parameters, and generate production-ready Markdown documentation.</p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <select id="studioTemplateSelect" class="form-select"
+                            style="min-width: 260px; font-weight: 600;">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="template-studio-container">
+                    <!-- Input Form Panel -->
+                    <div class="studio-form-panel">
+                        <div class="studio-panel-title">
+                            <span>⚙️</span>
+                            <span>Template Variables</span>
+                        </div>
+                        <div id="studioFormFields" style="display: flex; flex-direction: column; gap: 14px;">
+                            <!-- Dynamic Form inputs -->
+                        </div>
+                    </div>
+
+                    <!-- Live Markdown Preview Panel -->
+                    <div class="studio-preview-panel">
+                        <div class="studio-preview-header">
+                            <div
+                                style="display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 13.5px;">
+                                <span>👁️</span>
+                                <span>Live Document Preview</span>
+                            </div>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-secondary" id="studioCopyBtn">
+                                    <span>📋</span>
+                                    <span>Copy Markdown</span>
+                                </button>
+                                <button class="btn btn-primary" id="studioDownloadBtn">
+                                    <span>⬇️</span>
+                                    <span>Export .md</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="studio-preview-content wiki-content-rendered" id="studioPreviewArea">
+                            <!-- Live interpolated markdown HTML -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 4: Interactive Quality Gate Checklist Runner -->
+            <section id="viewChecklists" class="view-panel">
+                <div
+                    style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 12px;">
+                    <div>
+                        <h2
+                            style="font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--text-primary);">
+                            Quality Gatekeeper & Process Checklists</h2>
+                        <p style="color: var(--text-secondary); font-size: 13.5px;">Interactive compliance gates
+                            ensuring zero-defect deployments and governance standards.</p>
+                    </div>
+                    <div>
+                        <select id="checklistSelect" class="form-select" style="min-width: 280px; font-weight: 600;">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="checklist-runner-container">
+                    <!-- Main Checklist Items Card -->
+                    <div class="checklist-main-card">
+                        <div class="checklist-header">
+                            <h3 class="checklist-title" id="activeChecklistTitle">Pull Request & Pre-Merge Readiness
+                                Gate</h3>
+                            <p class="checklist-desc" id="activeChecklistDesc">Interactive verification checklist
+                                required by software engineers before requesting peer review or merging into trunk.</p>
+                        </div>
+                        <div class="checklist-items-list" id="activeChecklistItems">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Progress Gauge & Sign-off Card -->
+                    <div class="checklist-sidebar">
+                        <div class="gauge-card">
+                            <div
+                                style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);">
+                                Completion Score</div>
+                            <div class="progress-circle-container">
+                                <svg class="progress-circle-svg" viewBox="0 0 140 140">
+                                    <circle class="progress-circle-bg" cx="70" cy="70" r="58"></circle>
+                                    <circle class="progress-circle-bar" id="checklistProgressCircle" cx="70" cy="70"
+                                        r="58" stroke-dasharray="364.4" stroke-dashoffset="364.4"></circle>
+                                </svg>
+                                <div class="progress-circle-text" id="checklistProgressText">0%</div>
+                            </div>
+                            <div style="font-size: 13px; font-weight: 600;" id="checklistItemsPassedCount">0 of 8 items
+                                verified</div>
+                            <div style="font-size: 11.5px; color: var(--text-muted);" id="checklistStatusSummary">Gate
+                                Status: Incomplete</div>
+                        </div>
+
+                        <div class="signoff-box">
+                            <div
+                                style="font-size: 12.5px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">
+                                Audit Sign-Off</div>
+                            <div class="form-group">
+                                <label class="form-label">Reviewing Engineer / Lead</label>
+                                <input type="text" id="signoffEngineerName" class="form-input"
+                                    placeholder="e.g. Alex Morgan" value="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Release / PR Reference</label>
+                                <input type="text" id="signoffRefNumber" class="form-input"
+                                    placeholder="e.g. PR #482 / Release v2.4.0">
+                            </div>
+                            <button class="btn btn-primary" id="generateSignoffReportBtn" style="margin-top: 6px;">
+                                <span>📑</span>
+                                <span>Export Audit Sign-Off</span>
+                            </button>
+                            <button class="btn btn-secondary" id="resetChecklistBtn"
+                                style="font-size: 12px; padding: 6px;">
+                                <span>↺</span>
+                                <span>Reset Checklist</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW 5: Glossary & RACI Hub -->
+            <section id="viewGlossary" class="view-panel">
+                <div style="margin-bottom: 24px;">
+                    <h2
+                        style="font-family: var(--font-sans); font-size: 22px; font-weight: 700; color: var(--text-primary);">
+                        Process Glossary & Acronym Index</h2>
+                    <p style="color: var(--text-secondary); font-size: 13.5px;">Standard terms, metrics, and governance
+                        concepts used across our software engineering organization.</p>
+                </div>
+
+                <div class="glossary-grid" id="glossaryGrid">
+                    <!-- Populated dynamically -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: Add / Edit Process Asset -->
+    <div class="modal-backdrop" id="assetModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title" id="assetModalTitle">Create New Process Asset</h3>
+                <button class="btn-icon" id="closeAssetModalBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Asset Title *</label>
+                    <input type="text" id="modalAssetTitle" class="form-input"
+                        placeholder="e.g. API Deprecation & Sunsetting SOP">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label">Asset Type *</label>
+                        <select id="modalAssetType" class="form-select">
+                            <option value="guideline">Guideline / SOP</option>
+                            <option value="template">Document Template</option>
+                            <option value="checklist">Quality Checklist</option>
+                            <option value="policy">Engineering Policy</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">SDLC Phase *</label>
+                        <select id="modalAssetPhase" class="form-select">
+                            <option value="requirements">Requirements & Product</option>
+                            <option value="architecture">Architecture & Design</option>
+                            <option value="development">Development & Code Review</option>
+                            <option value="qa">Quality Assurance & Testing</option>
+                            <option value="release">Release & Deployment</option>
+                            <option value="operations">Operations & Incidents</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label">Owner / Guild</label>
+                        <input type="text" id="modalAssetOwner" class="form-input" placeholder="e.g. Platform Guild">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tags (comma-separated)</label>
+                        <input type="text" id="modalAssetTags" class="form-input"
+                            placeholder="e.g. API, REST, Deprecation">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Short Summary *</label>
+                    <textarea id="modalAssetSummary" class="form-textarea"
+                        placeholder="Brief summary of the purpose and scope of this asset..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Markdown Content *</label>
+                    <textarea id="modalAssetContent" class="form-textarea"
+                        style="min-height: 180px; font-family: var(--font-mono); font-size: 13px;"
+                        placeholder="# Document Title&#10;&#10;## 1. Overview&#10;Describe process..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelAssetModalBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveAssetModalBtn">Save Asset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Command Palette / Fast Search -->
+    <div class="modal-backdrop" id="paletteModal">
+        <div class="modal-card palette-card">
+            <div style="display: flex; align-items: center; padding: 4px 8px;">
+                <span style="font-size: 18px; margin-left: 10px; color: var(--text-secondary);">🔍</span>
+                <input type="text" id="paletteSearchInput" class="palette-search-input"
+                    placeholder="Search templates, guidelines, checklists, SDLC phases...">
+                <span class="kbd-shortcut" style="margin-right: 12px;">ESC</span>
+            </div>
+            <ul class="palette-results-list" id="paletteResultsList">
+                <!-- Search results -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- MODAL: Audit Sign-off Summary -->
+    <div class="modal-backdrop" id="signoffModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Quality Gate Audit Sign-off Certificate</h3>
+                <button class="btn-icon" id="closeSignoffModalBtn">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 13px; color: var(--text-secondary);">The following signed Markdown artifact has
+                    been generated for your audit trail:</p>
+                <div class="code-block-wrapper">
+                    <pre><code id="signoffReportMarkdown" class="language-markdown"></code></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="copySignoffBtn">📋 Copy Sign-off</button>
+                <button class="btn btn-primary" id="downloadSignoffBtn">⬇️ Download .md</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/templates.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

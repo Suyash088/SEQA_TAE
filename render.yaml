@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: seqa-process-wiki
+    env: static
+    buildCommand: ""
+    publishDir: "."
+    pullRequestPreviewsEnabled: true
